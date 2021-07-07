@@ -58,6 +58,9 @@
     w3m
     file
     wget
+    go
+    goimports
+    gopls
     (python39.withPackages (ps: with ps; [ pynvim ]))
   ];
 
