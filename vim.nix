@@ -9,7 +9,7 @@ let
   #     sha256 = "0v7940h1sy8h6ba20qdadx82zbmi9mm4yij9gsxp3d9n94av8zsx";
   #   };
   # };
-  vim-lsp-settings = pkgs.vimUtils.buildVimPlugin {
+  vim-lsp-settings = pkgs.vimUtils.buildVimPlugin {  # fork mattn/vim-lsp-settings
     name = "vim-lsp-settings";
     src = pkgs.fetchFromGitHub {
       owner = "ykonomi";
@@ -45,6 +45,33 @@ let
       sha256 = "1xvqdkqywi3f9p8yykh96v1p4658y6183abxf2mr7nj17b399xnc";
     };
   };
+ vim-lsp-ultisnips = pkgs.vimUtils.buildVimPlugin {
+   name = "vim-lsp-ultisnips";
+   src = pkgs.fetchFromGitHub {
+     owner = "thomasfaingnaert";
+     repo = "vim-lsp-ultisnips";
+     rev = "30a476df29e5c6816403cf1c1960924031f0cdbe";
+     sha256 = "003f3cbgd9crwkf24h1kzv2gf6ixxdidhgasslkvv95lfvnxikv3";
+   };
+ };
+  vim-lsp-snippets = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-lsp-snippets";
+    src = pkgs.fetchFromGitHub {
+      owner = "thomasfaingnaert";
+      repo = "vim-lsp-snippets";
+      rev = "7d9bca7f5b37285cfec412caf92e1d6132e1fffb";
+      sha256 = "0ikjds0y0r3iq3b8dpw2pl3a3vh7kvn7jrlvz16s1n2ckixgirx4";
+    };
+  };
+#   = pkgs.vimUtils.buildVimPlugin {
+#    name = "";
+#    src = pkgs.fetchFromGitHub {
+#      owner = "";
+#      repo = "";
+#      rev = "";
+#      sha256 = "3xvqdkqywi3f9p8yykh96v1p4658y6183abxf2mr7nj17b399xnc";
+#    };
+#  };
 
 in
 
@@ -69,10 +96,17 @@ in
             asyncomplete-lsp
 
             # snippet
+            ultisnips
+            vim-snippets
+            vim-lsp-ultisnips
+            vim-lsp-snippets
 
             # language plugins
             vim-nix 
             vim-goimports
+
+            # etc
+            nerdtree
         ];
         vimrcConfig.customRC = ''
           inoremap <C-c> <ESC>
@@ -111,9 +145,9 @@ in
           function! s:on_lsp_buffer_enabled() abort
             setlocal omnifunc=lsp#complete
             setlocal signcolumn=yes
-            nmap <buffer> gd <plug>(lsp-definition)
-            nmap <buffer> <f2> <plug>(lsp-rename)
-            inoremap <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
+            nmap <buffer>gd <plug>(lsp-definition)
+            nmap <buffer><f2> <plug>(lsp-rename)
+            inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<cr>"
           endfunction
 
           augroup lsp_install
@@ -132,9 +166,15 @@ in
 
           inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
           inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-          inoremap <expr><cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
           set completeopt=menuone,noinsert
+
+          nnoremap <C-e>l :NERDTreeToggle<CR>
+          nnoremap <C-e>h :NERDTreeFind<CR>
+
+          let g:UltiSnipsExpandTrigger="<C-j>"
+          let g:UltiSnipsJumpForwardTrigger="<C-f>"
+          let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 
           syntax enable
         '';
