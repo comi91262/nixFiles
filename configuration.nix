@@ -61,7 +61,7 @@
     go
     goimports
     gopls
-    (python39.withPackages (ps: with ps; [ pynvim ]))
+    (python39.withPackages (ps: with ps; [ pynvim pip ]))
   ];
 
   users.users.ykonomi = {

@@ -103,7 +103,7 @@ in
 
             # language plugins
             vim-nix 
-            vim-goimports
+            # vim-goimports
 
             # etc
             nerdtree
@@ -146,7 +146,9 @@ in
             setlocal omnifunc=lsp#complete
             setlocal signcolumn=yes
             nmap <buffer>gd <plug>(lsp-definition)
-            nmap <buffer><f2> <plug>(lsp-rename)
+            nmap <buffer>gr <plug>(lsp-references)
+            nmap <buffer>gm <plug>(lsp-rename)
+
             inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<cr>"
           endfunction
 
@@ -159,6 +161,8 @@ in
           let g:lsp_diagnostics_enabled = 1
           let g:lsp_diagnostics_echo_cursor = 1
           let g:lsp_diagnostics_float_cursor = 1
+
+          autocmd BufWritePre *.go call execute(['LspCodeActionSync source.organizeImports', 'LspDocumentFormatSync'])
 
           let g:asyncomplete_auto_popup = 1
           let g:asyncomplete_auto_completeopt = 0
