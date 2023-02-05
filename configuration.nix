@@ -23,14 +23,6 @@
     enable = true;
     
     displayManager.defaultSession = "none+i3";
-    displayManager.sessionCommands = ''
-      ${pkgs.xorg.xrdb}/bin/xrdb -merge <<EOF
-         URxvt.font: xft:source han code jp:pixelsize=15
-         URxvt.scrollBar: false
-         URxvt.foreground: [90]#ecf0fe	
-         URxvt.background: [90]#232537
-      EOF
-    '';
     windowManager.i3.enable = true;
     xkbOptions = "ctrl:swapcaps";
     libinput.enable = true;
@@ -53,7 +45,12 @@
   environment.systemPackages = with pkgs; [
     chromium
     git
-    rxvt_unicode
+    (st.overrideAttrs (oldAttrs: rec {
+      patches = [
+      ];
+      configFile = writeText "config.def.h" (builtins.readFile ./config.def.h);
+      postPatch = "${oldAttrs.postPatch}\n cp ${configFile} config.def.h";
+    }))
     scrot
     w3m
     file
