@@ -34,7 +34,7 @@
     windowManager.i3.enable = true;
     xkbOptions = "ctrl:swapcaps";
     libinput.enable = true;
-    libinput.naturalScrolling = true;
+    libinput.touchpad.naturalScrolling = true;
   };
 
   fonts.fonts = with pkgs; [  
