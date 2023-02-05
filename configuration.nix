@@ -58,9 +58,13 @@
     w3m
     file
     wget
+    gcc
     go
-    goimports
+    protobuf
+    gotools
     gopls
+    peco
+    nodejs
     (python39.withPackages (ps: with ps; [ pynvim pip ]))
   ];
 
@@ -69,7 +73,8 @@
     home = "/home/ykonomi";
     extraGroups = [ "wheel" "docker" ];
   };
-  
+
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -91,6 +96,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
-
 }
 
