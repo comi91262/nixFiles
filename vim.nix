@@ -1,16 +1,7 @@
 { pkgs, ... }:
 let
-  # vim-hug-neovim-rpc = pkgs.vimUtils.buildVimPlugin {
-  #   name = "vim-hug-neovim-rpc";
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "roxma";
-  #     repo = "vim-hug-neovim-rpc";
-  #     rev = "93ae38792bc197c3bdffa2716ae493c67a5e7957";
-  #     sha256 = "0v7940h1sy8h6ba20qdadx82zbmi9mm4yij9gsxp3d9n94av8zsx";
-  #   };
-  # };
-  vim-lsp-settings = pkgs.vimUtils.buildVimPlugin {  # fork mattn/vim-lsp-settings
-    name = "vim-lsp-settings";
+  vim-lsp-settings = pkgs.vimUtils.buildVimPlugin { 
+    name = "vim-lsp-settings"; # fork mattn/vim-lsp-settings
     src = pkgs.fetchFromGitHub {
       owner = "ykonomi";
       repo = "vim-lsp-settings";
@@ -63,27 +54,33 @@ let
       sha256 = "0ikjds0y0r3iq3b8dpw2pl3a3vh7kvn7jrlvz16s1n2ckixgirx4";
     };
   };
-#   = pkgs.vimUtils.buildVimPlugin {
-#    name = "";
-#    src = pkgs.fetchFromGitHub {
-#      owner = "";
-#      repo = "";
-#      rev = "";
-#      sha256 = "3xvqdkqywi3f9p8yykh96v1p4658y6183abxf2mr7nj17b399xnc";
-#    };
-#  };
-
+  ctrlp = pkgs.vimUtils.buildVimPlugin {
+    name = "ctrlp.vim";
+    src = pkgs.fetchFromGitHub {
+      owner = "ctrlpvim";
+      repo = "ctrlp.vim";
+      rev = "971c4d41880b72dbbf1620b3ad91418a6a6f6b9c";
+      sha256 = "0n68hg59h4rjn0ziqbsh5pr03l3kr98zk54659ny6vq107af1w96";
+    };
+  };
+  kyotonight.vim = pkgs.vimUtils.buildVimPlugin {
+    name = "kyotonight.vim";
+    src = pkgs.fetchFromGitHub {
+      owner = "voidekh";
+      repo = "kyotonight.vim";
+      rev = "f85cc3e602b0d0c9a6b4c67bfaef09698df9be5c";
+      sha256 = "sha256-luDXYitrlnZYO/DsZywSCSQa3LrWxzs70EeCzfN5Dwg=";
+    };
+  };
 in
-
   {
     environment.variables = { EDITOR = "vim"; };
     environment.systemPackages = with pkgs; [
-      ((vim_configurable.override { python = python39 ; }) 
-      .customize{
+      (vim_configurable.customize{
         name = "vim";
         vimrcConfig.plug.plugins = with pkgs.vimPlugins; [
             # theme
-            nord-vim
+            kyotonight.vim
             vim-airline
             vim-airline-themes
 
@@ -103,10 +100,10 @@ in
 
             # language plugins
             vim-nix 
-            # vim-goimports
 
             # etc
             nerdtree
+            ctrlp
         ];
         vimrcConfig.customRC = ''
           inoremap <C-c> <ESC>
@@ -132,11 +129,16 @@ in
           set matchtime=1
           set anti enc=utf-8
           set guifont=SourceHanCodeJP\ 15
+          set noswapfile
+
+          set background=dark
+          colorscheme kyotonight
+          let g:airline_theme='kyotonight'
 
           set termguicolors
-          colorscheme nord
-          let g:airline_theme='deus'
-          let g:airline_powerline_font=1
+          let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " 文字色
+          let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " 背景色
+
 
           if empty(globpath(&rtp, 'autoload/lsp.vim'))
             finish
