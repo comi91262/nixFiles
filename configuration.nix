@@ -97,6 +97,18 @@
     '';
   };
 
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    shortcut = "j";
+     extraConfig = ''
+        set -g status-interval 1
+        set -g status-justify "centre"
+        set -g status-bg "colour238"
+        set -g status-fg "colour255"
+     '';
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
