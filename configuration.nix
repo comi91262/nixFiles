@@ -68,12 +68,34 @@
     (python39.withPackages (ps: with ps; [ pynvim pip ]))
   ];
 
+  users.defaultUserShell = pkgs.zsh;
   users.users.ykonomi = {
+    useDefaultShell = true;
     isNormalUser = true;
     home = "/home/ykonomi";
     extraGroups = [ "wheel" "docker" ];
   };
 
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableBashCompletion = true;
+    autosuggestions.enable = true;
+    histSize = 100000;
+    shellInit = ''
+      function peco-history-selection() {
+        BUFFER=`history -n 1 | tac  | awk '!a[$0]++' | peco`
+        CURSOR=$#BUFFER
+        zle reset-prompt
+      }
+      zle -N peco-history-selection
+      bindkey '^R' peco-history-selection
+
+      setopt inc_append_history
+      setopt share_history
+      setopt hist_ignore_dups
+    '';
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
