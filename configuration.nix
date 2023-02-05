@@ -47,6 +47,8 @@
     git
     (st.overrideAttrs (oldAttrs: rec {
       patches = [
+        ./st-patch/st-scrollback-0.8.5.diff
+        ./st-patch/st-scrollback-reflow-0.8.5.diff
       ];
       configFile = writeText "config.def.h" (builtins.readFile ./config.def.h);
       postPatch = "${oldAttrs.postPatch}\n cp ${configFile} config.def.h";
