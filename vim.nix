@@ -5,7 +5,7 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "ykonomi";
       repo = "vim-lsp-settings";
-      rev = "be128a66d54f21f955ca19a422e7a92506d81f99";
+      rev = "961868855efe746213b7a44d7bcc87ce9c33d810";
       sha256 = "sha256:0w1bl64n23n93lwy29bdxh09652j4mq1c47qzav8x24v5qdz7pdm";
     };
   };
@@ -87,6 +87,7 @@ in
             # Language Server
             vim-lsp
             vim-lsp-settings
+            ale
 
             # complement 
             asyncomplete
@@ -100,6 +101,10 @@ in
 
             # language plugins
             vim-nix 
+
+            # formatter
+            vim-prettier
+            typescript-vim
 
             # etc
             nerdtree
@@ -181,6 +186,8 @@ in
           let g:UltiSnipsExpandTrigger="<C-j>"
           let g:UltiSnipsJumpForwardTrigger="<C-f>"
           let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+          
+          au BufRead,BufNewFile *.yaml set ft=cloudformation.yaml
 
           syntax enable
         '';

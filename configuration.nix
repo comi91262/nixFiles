@@ -8,6 +8,12 @@
      # <home-manager/nixos>
     ];
 
+#  networking.extraHosts =
+#    ''
+#      18.177.55.108 pipe.u.isucon.dev
+#      18.177.55.108 test001.u.isucon.dev
+#      18.177.55.108 z7yzszv3d1.u.isucon.dev
+#    '';
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -27,15 +33,19 @@
     xkbOptions = "ctrl:swapcaps";
     libinput.enable = true;
     libinput.touchpad.naturalScrolling = true;
+    libinput.touchpad.tapping = false;
   };
 
-  fonts.fonts = with pkgs; [  
+  fonts.packages = with pkgs; [  
     source-han-code-jp
   ];
 
   i18n.inputMethod = {
-    enabled = "fcitx";
-    fcitx.engines = with pkgs.fcitx-engines; [ anthy mozc ];
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+        fcitx5-mozc
+        fcitx5-gtk
+    ];
   };
 
   # Enable sound.
@@ -63,8 +73,13 @@
     gotools
     gopls
     peco
+    direnv
+    awscli2
+    deno
+
     nodejs
-    (python39.withPackages (ps: with ps; [ pynvim pip ]))
+    nodePackages.prettier
+    (python3.withPackages (ps: with ps; [ pynvim pip cfn-lint ]))
   ];
 
   users.defaultUserShell = pkgs.zsh;
